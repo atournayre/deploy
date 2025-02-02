@@ -24,6 +24,8 @@ function deploy(): void
     hook('hook:post-update-code');
     cacheClear();
     hook('hook:post-deploy');
+
+    io()->success('Hotfix deployed');
 }
 
 #[AsTask(namespace: 'hotfix', description: 'Generate hotfix branch')]
