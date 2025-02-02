@@ -57,7 +57,7 @@ function generate(): void
 
     if ($issueNumber) {
         $issueBranchName = getFixBranchName($hotfixBranchName, $issueNumber);
-        gitCreateBranch($issueBranchName);
+        gitCreateBranch($issueBranchName, $hotfixBranchName);
     }
 
     io()->success('Hotfix generated');
