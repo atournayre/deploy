@@ -3,7 +3,8 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": ">=8.2.22"
+        "php": ">=8.2.22",
+        "symfony/console": "^6.4"
     },
     "minimum-stability": "stable"
 }
