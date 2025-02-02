@@ -6,6 +6,7 @@ namespace Atournayre\Deploy\Tasks;
 use Castor\Attribute\AsContext;
 use Castor\Context;
 use function Castor\io;
+use function Castor\run;
 use function Castor\with;
 
 function updateCode(): void
@@ -13,10 +14,10 @@ function updateCode(): void
     io()->title('Update the code');
 
     with(function (Context $context) {
-        \Castor\run('pwd');
-        \Castor\run(['git', 'fetch',]);
-        \Castor\run(['git', 'checkout', $context['main_branch'],]);
-        \Castor\run(['git', 'pull', 'origin', $context['main_branch'],]);
+        run('pwd');
+        run(['git', 'fetch',]);
+        run(['git', 'checkout', $context['MAIN_BRANCH'],]);
+        run(['git', 'pull', 'origin', $context['MAIN_BRANCH'],]);
     }, context: 'git_context');
 
     io()->comment('Code updated');
@@ -29,7 +30,7 @@ function create_git_context(): Context
 
     return new Context(
         [
-            'main_branch' => $dotEnv['MAIN_BRANCH'],
+            'MAIN_BRANCH' => $dotEnv['MAIN_BRANCH'],
         ],
         workingDirectory: $dotEnv['APP_DIRECTORY']
     );
