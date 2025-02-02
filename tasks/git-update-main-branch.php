@@ -6,7 +6,7 @@ namespace Atournayre\Deploy\Tasks;
 use function Castor\context;
 use function Castor\run;
 
-function gitUpdateMainBranch(): void
+function gitUpdateBranch(string $branch): void
 {
     $context = context();
 
@@ -22,7 +22,7 @@ function gitUpdateMainBranch(): void
         command: [
             'git',
             'checkout',
-            $context['MAIN_BRANCH'],
+            $branch,
         ],
         context: $context
     );
@@ -32,7 +32,7 @@ function gitUpdateMainBranch(): void
             'git',
             'pull',
             'origin',
-            $context['MAIN_BRANCH'],
+            $branch,
         ],
         context: $context
     );
