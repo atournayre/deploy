@@ -1,2 +1,1 @@
-# deploy
-Script de déploiement
+# Script de déploiement
