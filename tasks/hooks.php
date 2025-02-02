@@ -6,6 +6,19 @@ namespace Atournayre\Deploy\Tasks;
 use Castor\Attribute\AsTask;
 use function Castor\io;
 
+
+function hook(string $hook): void
+{
+    $dotEnv = dotEnv();
+
+    \Castor\run(
+        command: [
+            $dotEnv['CASTOR_BIN'],
+            $hook,
+        ],
+    );
+}
+
 #[AsTask(namespace: 'hook', description: 'Pre-deploy hook')]
 function preDeploy(): void
 {
