@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace Atournayre\Deploy\Tasks;
 
 use Castor\Attribute\AsTask;
-use function Castor\io;
+use function Castor\run;
 
 
 function hook(string $hook): void
 {
     $dotEnv = dotEnv();
 
-    \Castor\run(
+    run(
         command: [
             $dotEnv['CASTOR_BIN'],
             $hook,
@@ -20,18 +20,10 @@ function hook(string $hook): void
 }
 
 #[AsTask(namespace: 'hook', description: 'Pre-deploy hook')]
-function preDeploy(): void
-{
-    io()->title('Pre-deploy');
-}
+function preDeploy(): void {}
 
 #[AsTask(namespace: 'hook', description: 'Post-deploy hook')]
-function postDeploy(): void
-{
-    io()->title('Post-deploy');
-}
+function postDeploy(): void {}
+
 #[AsTask(namespace: 'hook', description: 'Post update code hook')]
-function postUpdateCode(): void
-{
-    io()->title('Post update code');
-}
+function postUpdateCode(): void {}
