@@ -31,7 +31,12 @@ function deploy(): void
 
     updateCode($dotEnv['MAIN_BRANCH']);
 
-    // Install front dependencies
+    \Castor\run(
+        command: [
+            $dotEnv['CASTOR_BIN'],
+            'hook:post-update-code',
+        ],
+    );
 
     cacheClear();
 

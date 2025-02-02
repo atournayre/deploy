@@ -12,8 +12,13 @@ function preDeploy(): void
     io()->title('Pre-deploy');
 }
 
-#[AsTask(namespace: 'hook', description: 'Pre-deploy hook')]
+#[AsTask(namespace: 'hook', description: 'Post-deploy hook')]
 function postDeploy(): void
 {
     io()->title('Post-deploy');
+}
+#[AsTask(namespace: 'hook', description: 'Post update code hook')]
+function postUpdateCode(): void
+{
+    io()->title('Post update code');
 }
