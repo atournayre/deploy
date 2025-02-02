@@ -71,6 +71,26 @@ Merge the hotfix branch into main, develop and releases.
 castor hotfix:merge
 ```
 
+## Update dependencies
+
+### Usage
+```bash
+castor dependencies:update
+```
+
+### How it works?
+
+1. Check if updates are available
+2. Ask for confirmation
+3. Create the branch
+4. Update dependencies
+5. Run composer-post-update hook
+6. Commit
+7. Push
+8. It's done!
+
+#### Events
+- hook:composer-post-update
 
 ## Hooks
 
