@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace GroupeMasProvence\Deploy\Tasks;
+namespace Atournayre\Deploy\Tasks;
 
 use Castor\Attribute\AsTask;
 use function Castor\io;

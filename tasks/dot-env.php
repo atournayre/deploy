@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace GroupeMasProvence\Deploy\Tasks;
+namespace Atournayre\Deploy\Tasks;
 
 use function Castor\load_dot_env;
 

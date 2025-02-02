@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace GroupeMasProvence\Deploy\Hotfix;
+namespace Atournayre\Deploy\Hotfix;
 
 use Castor\Attribute\AsTask;
-use function GroupeMasProvence\Deploy\Tasks\cacheClear;
-use function GroupeMasProvence\Deploy\Tasks\confirmDeploy;
-use function GroupeMasProvence\Deploy\Tasks\dotEnv;
-use function GroupeMasProvence\Deploy\Tasks\postDeploy;
-use function GroupeMasProvence\Deploy\Tasks\preDeploy;
-use function GroupeMasProvence\Deploy\Tasks\updateCode;
+use function Atournayre\Deploy\Tasks\cacheClear;
+use function Atournayre\Deploy\Tasks\confirmDeploy;
+use function Atournayre\Deploy\Tasks\dotEnv;
+use function Atournayre\Deploy\Tasks\postDeploy;
+use function Atournayre\Deploy\Tasks\preDeploy;
+use function Atournayre\Deploy\Tasks\updateCode;
 use function Castor\import;
 use function Castor\io;
 
