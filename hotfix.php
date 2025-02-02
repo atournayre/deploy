@@ -17,6 +17,7 @@ use function Atournayre\Deploy\Tasks\gitMerge;
 use function Atournayre\Deploy\Tasks\gitPush;
 use function Atournayre\Deploy\Tasks\hook;
 use function Atournayre\Deploy\Tasks\incrementAppVersion;
+use function Atournayre\Deploy\Tasks\patch;
 use function Atournayre\Deploy\Tasks\updateAppVersion;
 use function Atournayre\Deploy\Tasks\updateCode;
 use function Atournayre\Deploy\Tasks\gitUpdateBranch;
@@ -34,6 +35,7 @@ function deploy(): void
     hook('hook:post-update-code');
     cacheClear();
     hook('hook:post-deploy');
+    patch();
 
     io()->success('Hotfix deployed');
 }
