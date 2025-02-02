@@ -27,3 +27,6 @@ function postDeploy(): void {}
 
 #[AsTask(namespace: 'hook', description: 'Post update code hook')]
 function postUpdateCode(): void {}
+
+#[AsTask(namespace: 'hook', description: 'Hotfix post update version hook')]
+function hotfixPostUpdateVersion(): void {}

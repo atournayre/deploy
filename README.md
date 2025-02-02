@@ -2,6 +2,13 @@
 
 Use [Castor](https://castor.jolicode.com/) to deploy Symfony application.
 
+## Installation
+
+1. `composer require atournayre/deploy`
+2. `cp vendor/atournayre/deploy/install/.env.dist tools/castor/.env`
+3. `cp vendor/atournayre/deploy/install/castor.php castor.php`
+4. Run `castor list` to see available commands.
+
 ## Features
 
 - Hotfix
@@ -39,6 +46,25 @@ Generate a hotfix branch and optionally create a sub-branch for a specific issue
 castor hotfix:generate
 ```
 
+#### Prerequisites
+
+- You must have a `composer.json` file in your working directory.
+- Your app must use semantic versioning.
+
+#### How it works?
+
+1. Check if there are uncommitted changes in your working directory, if so, abort.
+2. Update main branch
+3. Get current version
+4. Create hotfix branch
+5. Update version
+6. Run hotfix-post-update-version hook
+7. Commit
+8. Push
+9. Ask for creation of a sub-branch in the hotfix branch
+10. Create the branch
+11. Done!
+
 ### Merge
 Merge the hotfix branch into main, develop and releases.
 ```bash
@@ -71,4 +97,3 @@ function afterExecutePostDeploy(AfterExecuteTaskEvent $event): void
     // do something
 }
 ```
-
