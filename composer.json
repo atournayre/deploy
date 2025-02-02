@@ -4,5 +4,6 @@
     "license": "proprietary",
     "require": {
         "php": ">=8.2.22"
-    }
+    },
+    "minimum-stability": "stable"
 }
