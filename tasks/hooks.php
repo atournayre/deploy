@@ -30,3 +30,6 @@ function postUpdateCode(): void {}
 
 #[AsTask(namespace: 'hook', description: 'Hotfix post update version hook')]
 function hotfixPostUpdateVersion(): void {}
+
+#[AsTask(namespace: 'hook', description: 'Composer post update hook')]
+function composerPostUpdate(): void {}
