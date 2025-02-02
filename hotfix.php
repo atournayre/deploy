@@ -6,7 +6,6 @@ namespace Atournayre\Deploy\Hotfix;
 use Castor\Attribute\AsTask;
 use function Atournayre\Deploy\Tasks\cacheClear;
 use function Atournayre\Deploy\Tasks\confirmDeploy;
-use function Atournayre\Deploy\Tasks\dotEnv;
 use function Atournayre\Deploy\Tasks\hook;
 use function Atournayre\Deploy\Tasks\updateCode;
 use function Castor\io;
@@ -14,13 +13,11 @@ use function Castor\io;
 #[AsTask(namespace: 'hotfix', description: 'Deploy Hotfix')]
 function deploy(): void
 {
-    $dotEnv = dotEnv();
-
     io()->section('Deploy Hotfix');
 
     confirmDeploy();
     hook('hook:pre-deploy');
-    updateCode($dotEnv['MAIN_BRANCH']);
+    updateCode();
     hook('hook:post-update-code');
     cacheClear();
     hook('hook:post-deploy');
