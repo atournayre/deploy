@@ -30,12 +30,12 @@ function deploy(): void
     io()->section('Deploy Hotfix');
 
     confirmDeploy();
-    hook('hook:pre-deploy');
-    updateCode();
-    hook('hook:post-update-code');
-    cacheClear();
-    hook('hook:post-deploy');
-    patch();
+//    hook('hook:pre-deploy');
+//    updateCode();
+//    hook('hook:post-update-code');
+//    cacheClear();
+//    hook('hook:post-deploy');
+//    patch();
 
     io()->success('Hotfix deployed');
 }
