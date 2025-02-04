@@ -8,7 +8,7 @@ use Castor\Context;
 use function Castor\io;
 use function Castor\run;
 
-final readonly class CacheClear implements RuleInterface
+final readonly class SymfonyCacheClear implements RuleInterface
 {
     public function __construct(
         private Context $context,

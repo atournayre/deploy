@@ -3,29 +3,11 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Tasks;
 
+use Atournayre\Deploy\Rules\Git\GitCommitAllChanges;
 use function Castor\context;
-use function Castor\run;
 
 function gitCommitAllChanges(string $message): void
 {
-    $context = context();
-
-    run(
-        command: [
-            'git',
-            'add',
-            '.',
-        ],
-        context: $context,
-    );
-
-    run(
-        command: [
-            'git',
-            'commit',
-            '-m',
-            $message,
-        ],
-        context: $context,
-    );
+    (new GitCommitAllChanges(context(), $message))
+        ->execute();
 }

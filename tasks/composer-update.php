@@ -3,16 +3,12 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Tasks;
 
+use Atournayre\Deploy\Rules\Composer\ComposerUpdate;
 use function Castor\context;
 use function Castor\run;
 
 function composerUpdate(array $options = []): void
 {
-    run(
-        command: array_merge([
-            'composer',
-            'update',
-        ], $options),
-        context: context(),
-    );
+    (new ComposerUpdate(context(), $options))
+        ->execute();
 }

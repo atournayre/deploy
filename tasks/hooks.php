@@ -3,17 +3,19 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Tasks;
 
+use Atournayre\Deploy\Helper\ContextHelper;
 use Castor\Attribute\AsTask;
 use function Castor\run;
 
 
 function hook(string $hook): void
 {
-    $dotEnv = dotEnv();
+    $context = ContextHelper::new()
+        ->context();
 
     run(
         command: [
-            $dotEnv['CASTOR_BIN'],
+            $context['CASTOR_BIN'],
             $hook,
         ],
     );

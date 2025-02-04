@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Tasks;
 
-use function Symfony\Component\String\u;
+use Atournayre\Deploy\Helper\ApplicationHelper;
+use function Castor\context;
 
 function getFixBranchName(string $hotfixBranchName, string $issueNumber): string
 {
-    return u($hotfixBranchName)
-        ->replace('hotfix/', 'fix/')
-        ->append('-', $issueNumber)
-        ->toString()
+    return (new ApplicationHelper(context()))
+        ->fixBranchName($hotfixBranchName, $issueNumber)
     ;
 }
