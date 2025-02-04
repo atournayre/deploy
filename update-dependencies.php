@@ -3,29 +3,37 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Hotfix;
 
+use Atournayre\Deploy\Configuration\Config;
+use Atournayre\Deploy\Rules\Composer\ComposerUpdate;
+use Atournayre\Deploy\Rules\Git\GitCheckUncommitedFiles;
+use Atournayre\Deploy\Rules\Git\GitCommitAllChanges;
+use Atournayre\Deploy\Rules\Git\GitCreateBranch;
+use Atournayre\Deploy\Rules\Git\GitPush;
+use Atournayre\Deploy\Rules\Git\GitUpdate;
+use Atournayre\Deploy\Rules\Hook\Hook;
 use Castor\Attribute\AsTask;
-use function Atournayre\Deploy\Tasks\checkUncommitedFiles;
-use function Atournayre\Deploy\Tasks\composerUpdate;
-use function Atournayre\Deploy\Tasks\gitCommitAllChanges;
-use function Atournayre\Deploy\Tasks\gitCreateBranch;
-use function Atournayre\Deploy\Tasks\gitPush;
-use function Atournayre\Deploy\Tasks\gitUpdateBranch;
-use function Atournayre\Deploy\Tasks\hook;
 use function Castor\context;
 use function Castor\io;
 
 #[AsTask(namespace: 'dependencies', description: 'Update dependencies')]
 function update(): void
 {
+    $config = Config::new();
+    $context = context();
+
     io()->section('Update dependencies');
 
-    checkUncommitedFiles('Unable to update dependencies because there are uncommitted changes in your working directory.');
+    GitCheckUncommitedFiles::new($context, 'Unable to update dependencies because there are uncommitted changes in your working directory.')
+        ->run();
 
-    $context = context();
-    $branch = $context['DEVELOP_BRANCH'];
-    gitUpdateBranch($branch);
+    GitUpdate::new(
+        $context,
+        $config->branches->origin,
+        $config->branches->develop,
+    )->run();
 
-    composerUpdate(['--dry-run']);
+    ComposerUpdate::new($context)
+        ->dryRun();
 
     $confirm = io()->ask('Do you want to update dependencies ? [y/n]');
 
@@ -34,17 +42,31 @@ function update(): void
         return;
     }
 
-    $currentDate = date('Y-m-d');
-    $branchName = 'update-deps/'.$currentDate;
+    $currentDate = new \DateTime();
+    $branchName = $config->branches->patterns->updateDependencies.'/'.$currentDate->format('Y-m-d');
 
-    gitCreateBranch($branchName, $context['MAIN_BRANCH']);
+    GitCreateBranch::new(
+        $context,
+        $branchName,
+        $config->branches->origin,
+    )->run();
 
-    composerUpdate();
+    ComposerUpdate::new($context)
+        ->run();
 
-    hook('hook:composer-post-update');
+    Hook::new($context, $config, 'hook:composer-post-update')
+        ->apply();
 
-    gitCommitAllChanges('Update dependencies '.$currentDate);
-    gitPush($branchName);
+    GitCommitAllChanges::new(
+        $context,
+        'Update dependencies '.$currentDate->format('Y-m-d'),
+    )->run();
+
+    GitPush::new(
+        $context,
+        $config->branches->origin,
+        $branchName,
+    )->run();
 
     io()->success('Update dependencies done');
 

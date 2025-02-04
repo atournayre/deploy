@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Rules\Patch;
 
-use Atournayre\Deploy\Contracts\RuleInterface;
+use Atournayre\Deploy\Configuration\Config;
 use Atournayre\Deploy\Helper\ApplicationHelper;
 use Castor\Context;
 use function Castor\fs;
@@ -11,21 +11,27 @@ use function Castor\io;
 use function Castor\run;
 use function Symfony\Component\String\u;
 
-final readonly class PatchApply implements RuleInterface
+final readonly class PatchApply
 {
-    public function __construct(
+    private function __construct(
         private Context $context,
+        private Config $config,
     )
     {
     }
 
-    public function execute(): void
+    public static function new(Context $context, Config $config): self
+    {
+        return new self($context, $config);
+    }
+
+    public function apply(): void
     {
         $appVersion = (new ApplicationHelper($this->context))
             ->version()
         ;
 
-        $patch = u($this->context['PATCH_DIRECTORY'])
+        $patch = u($this->config->directories->patch)
             ->append('/', $appVersion, '.php')
             ->toString()
         ;
@@ -39,8 +45,8 @@ final readonly class PatchApply implements RuleInterface
 
         run(
             command: [
-                $this->context['PHP_BIN'],
-                $this->context['BIN_CONSOLE'],
+                $this->config->bin->php,
+                $this->config->bin->symfony,
                 'patch:'.$patch,
             ],
             context: $this->context,

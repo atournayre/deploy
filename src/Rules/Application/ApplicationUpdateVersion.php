@@ -3,21 +3,25 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Rules\Application;
 
-use Atournayre\Deploy\Contracts\RuleInterface;
-use Castor\Context;
+use Atournayre\Deploy\Configuration\Config;
 
-final readonly class ApplicationUpdateVersion implements RuleInterface
+final readonly class ApplicationUpdateVersion
 {
-    public function __construct(
-        private Context $context,
+    private function __construct(
+        private Config $config,
         private string $version,
     )
     {
     }
 
-    public function execute(): void
+    public static function new(Config $config, string $version): self
     {
-        $composerFile = $this->context['COMPOSER_JSON_PATH'];
+        return new self($config, $version);
+    }
+
+    public function updateComposerJson(): void
+    {
+        $composerFile = $this->config->composer->jsonPath;
 
         if (null === $composerFile) {
             throw new \RuntimeException('Unable to get app version because COMPOSER_JSON_PATH is not defined.');

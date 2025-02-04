@@ -3,26 +3,41 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Rules\Composer;
 
-use Atournayre\Deploy\Contracts\RuleInterface;
 use Castor\Context;
 use function Castor\run;
 
-final readonly class ComposerUpdate implements RuleInterface
+final readonly class ComposerUpdate
 {
-    public function __construct(
+    private function __construct(
         private Context $context,
-        private array $options = [],
     )
     {
     }
 
-    public function execute(): void
+    public static function new(Context $context): self
+    {
+        return new self($context);
+    }
+
+    public function run(): void
     {
         run(
-            command: array_merge([
+            command: [
                 'composer',
                 'update',
-            ], $this->options),
+            ],
+            context: $this->context,
+        );
+    }
+
+    public function dryRun(): void
+    {
+        run(
+            command: [
+                'composer',
+                'update',
+                '--dry-run',
+            ],
             context: $this->context,
         );
     }

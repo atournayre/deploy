@@ -3,25 +3,24 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Rules\Git;
 
-use Atournayre\Deploy\Contracts\RuleInterface;
 use Castor\Context;
 use function Castor\run;
 
-final readonly class GitCheckUncommitedFiles implements RuleInterface
+final readonly class GitCheckUncommitedFiles
 {
-    public function __construct(
+    private function __construct(
         private Context $context,
         private ?string $message = null,
     )
     {
     }
 
-    public function execute(): void
+    public static function new(Context $context, ?string $message = null): self
     {
-        $this->checkUncommitedFiles();
+        return new self($context, $message);
     }
 
-    private function checkUncommitedFiles(): void
+    public function run(): void
     {
         $process = run(
             command: [
@@ -32,8 +31,10 @@ final readonly class GitCheckUncommitedFiles implements RuleInterface
             context: $this->context
         );
 
-        if (!empty($process->getOutput())) {
-            throw new \RuntimeException($this->message ?: 'There are uncommitted changes in your working directory.');
+        if (empty($process->getOutput())) {
+            return;
         }
+
+        throw new \RuntimeException($this->message ?: 'There are uncommitted changes in your working directory.');
     }
 }

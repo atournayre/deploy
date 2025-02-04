@@ -3,20 +3,24 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Rules\Git;
 
-use Atournayre\Deploy\Contracts\RuleInterface;
 use Castor\Context;
 use function Castor\run;
 
-final readonly class GitCommitAllChanges implements RuleInterface
+final readonly class GitCommitAllChanges
 {
-    public function __construct(
+    private function __construct(
         private Context $context,
-        private string  $message,
+        private string $message,
     )
     {
     }
 
-    public function execute(): void
+    public static function new(Context $context, string $message): self
+    {
+        return new self($context, $message);
+    }
+
+    public function run(): void
     {
         run(
             command: [

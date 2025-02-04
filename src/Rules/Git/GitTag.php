@@ -3,20 +3,24 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Rules\Git;
 
-use Atournayre\Deploy\Contracts\RuleInterface;
 use Castor\Context;
 use function Castor\run;
 
-final readonly class GitTag implements RuleInterface
+final readonly class GitTag
 {
-    public function __construct(
+    private function __construct(
         private Context $context,
-        private string  $tag,
+        private string $tag,
     )
     {
     }
 
-    public function execute(): void
+    public static function new(Context $context, string $tag): self
+    {
+        return new self($context, $tag);
+    }
+
+    public function run(): void
     {
         run(
             command: [

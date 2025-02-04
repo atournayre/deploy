@@ -3,18 +3,12 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Rules\Interact;
 
-use Atournayre\Deploy\Contracts\RuleInterface;
+use Castor\Context;
 use function Castor\io;
 
-final readonly class ConfirmDeploy implements RuleInterface
+final readonly class ConfirmDeploy
 {
-
-    public function execute(): void
-    {
-        $this->confirmDeploy();
-    }
-
-    private function confirmDeploy(): void
+   public function confirm(): void
     {
         $confirm = io()->ask('Are you sure you want to deploy ? [yes/no] : ');
 

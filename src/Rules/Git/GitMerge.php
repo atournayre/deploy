@@ -3,20 +3,24 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Rules\Git;
 
-use Atournayre\Deploy\Contracts\RuleInterface;
 use Castor\Context;
 use function Castor\run;
 
-final readonly class GitMerge implements RuleInterface
+final readonly class GitMerge
 {
-    public function __construct(
+    private function __construct(
         private Context $context,
-        private string  $branch,
+        private string $branch,
     )
     {
     }
 
-    public function execute(): void
+    public static function new(Context $context, string $branch): self
+    {
+        return new self($context, $branch);
+    }
+
+    public function run(): void
     {
         $process = run(
             command: [
@@ -30,8 +34,10 @@ final readonly class GitMerge implements RuleInterface
             context: $this->context->withQuiet(),
         );
 
-        if ($process->getExitCode() !== 0) {
-            throw new \RuntimeException('Merge failed.');
+        if ($process->getExitCode() === 0) {
+            return;
         }
+
+        throw new \RuntimeException('Merge failed.');
     }
 }

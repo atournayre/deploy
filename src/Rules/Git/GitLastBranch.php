@@ -3,21 +3,25 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Rules\Git;
 
-use Atournayre\Deploy\Contracts\RuleInterface;
 use Castor\Context;
 use function Castor\run;
 
-final readonly class GitLastBranch implements RuleInterface
+final readonly class GitLastBranch
 {
-    public function __construct(
+    private function __construct(
         private Context $context,
-        private string  $branch,
-        private ?string $startPoint = null,
+        private string $branch,
+        private string $startPoint,
     )
     {
     }
 
-    public function execute(): void
+    public static function new(Context $context, string $branch, string $startPoint): self
+    {
+        return new self($context, $branch, $startPoint);
+    }
+
+    public function run(): void
     {
         run(
             command: array_filter([

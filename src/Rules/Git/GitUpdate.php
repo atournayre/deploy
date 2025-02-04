@@ -3,20 +3,25 @@ declare(strict_types=1);
 
 namespace Atournayre\Deploy\Rules\Git;
 
-use Atournayre\Deploy\Contracts\RuleInterface;
 use Castor\Context;
 use function Castor\run;
 
-final readonly class GitUpdate implements RuleInterface
+final readonly class GitUpdate
 {
-    public function __construct(
+    private function __construct(
         private Context $context,
-        private string  $branch,
+        private string $origin,
+        private string $branch,
     )
     {
     }
 
-    public function execute(): void
+    public static function new(Context $context, string $origin, string $branch): self
+    {
+        return new self($context, $origin, $branch);
+    }
+
+    public function run(): void
     {
         run(
             command: [
@@ -39,7 +44,7 @@ final readonly class GitUpdate implements RuleInterface
             command: [
                 'git',
                 'pull',
-                'origin',
+                $this->origin,
                 $this->branch,
             ],
             context: $this->context,

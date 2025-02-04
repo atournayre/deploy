@@ -1,33 +1,37 @@
 <?php
 declare(strict_types=1);
 
-namespace Atournayre\Deploy\Rules\Symfony;
+namespace Atournayre\Deploy\Rules\Hook;
 
 use Atournayre\Deploy\Configuration\Config;
 use Castor\Context;
+use function Castor\io;
 use function Castor\run;
 
-final readonly class SymfonyCacheClear
+final readonly class Hook
 {
     private function __construct(
         private Context $context,
         private Config $config,
+        private string $hook,
     )
     {
     }
 
-    public static function new(Context $context, Config $config): self
+    public static function new(Context $context, Config $config, string $hook): self
     {
-        return new self($context, $config);
+        return new self($context, $config, $hook);
     }
 
-    private function run(): void
+    public function apply(): void
     {
+        io()->title('Apply patch '.$this->hook);
+
         run(
             command: [
                 $this->config->bin->php,
                 $this->config->bin->symfony,
-                'cache:clear',
+                $this->hook,
             ],
             context: $this->context,
         );
